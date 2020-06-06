@@ -1,0 +1,92 @@
+.topbar-one {
+  background-color: #3156A3;
+}
+.topbar-one .container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.topbar-one__contact {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.topbar-one__contact-item {
+  display: inline-block;
+  vertical-align: middle;
+}
+.topbar-one__contact-item:not(:last-child):after {
+  content: '';
+  width: 1px;
+  height: 33px;
+  display: inline-block;
+  vertical-align: middle;
+  background-color: rgba(0, 0, 0, 0.2);
+  margin-left: 30px;
+  margin-right: 26px;
+}
+.topbar-one__contact-item a {
+  color: #FFFFFF;
+  font-size: 16px;
+}
+.topbar-one__contact-item a i {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 18px;
+  color: #FFFFFF;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 40px;
+  background-color: rgba(0, 0, 0, 0.1);
+  margin-right: 20px;
+}
+.topbar-one__contact-item a:hover i {
+  background-color: #fff;
+  color: #0384CE;
+}
+.topbar-one__btn {
+  display: inline-block;
+  vertical-align: middle;
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 16px;
+  background-color: #0384CE;
+  padding: 22px 35.5px;
+  -webkit-transition: all .4s ease;
+  transition: all .4s ease;
+}
+.topbar-one__btn:hover {
+  color: #0384CE;
+  background-color: #fff;
+}
+.topbar-one .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+  width: 40px;
+}
+.topbar-one__language {
+  margin-right: 20px;
+}
+.topbar-one__language .btn-light {
+  padding: 0;
+  border: none;
+  outline: none;
+  background-color: transparent !important;
+  color: #fff !important;
+  font-size: 17px;
+  line-height: 1em;
+}
+.topbar-one__language .dropdown-toggle::after {
+  border: none;
+  content: '\e313';
+  font-family: 'Material Icons';
+  font-size: 22px;
+  color: #fff;
+}
