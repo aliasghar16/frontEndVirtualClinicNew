@@ -1,12 +1,169 @@
 import React , { useState,useContext} from 'react'
 import {AuthContext} from '../../App';
 import axios from 'axios'
-import {Accordion, Form, Button} from 'react-bootstrap';
+import {Accordion, Form, Button , Modal , MydModalWithGrid} from 'react-bootstrap';
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
+
+
+
 
 
 let PatientProfile=()=>{
+
+
+  const initialState = {
+    patientName:"",
+    gender:"",
+    dateOfBirth:new Date(),
+    bloodGroup:'',
+    cnic:'',
+    isSubmitting: false,
+    errorMessage: null,
+    successMessage:null
+  };
+  let [data, setData] = React.useState(initialState);
+
+  let handleInputChange = event => {
+     setData({
+       ...data,
+       [event.target.name]: event.target.value
+     });
+   };
+
+
+
+   const handleFormSubmit = event => {
+
+       event.preventDefault();
+       setData({
+         ...data,
+         isSubmitting: true,
+         errorMessage: null
+       });
+       axios({
+         method: 'post',
+         url: '/patient/register',
+         data: {patientName:data.patientName,gender:data.gender ,email:data.email,  password:data.password,dateOfBirth:data.dateOfBirth, mobileNumber:'+92'+data.mobileNumber}
+       })
+
+     .then(function (response) {
+       console.log('+++++ response',response);
+       // notify(response.data.message);
+       setData({
+             isSubmitting: false,
+           });
+
+     })
+     .catch(error=>{
+
+       console.log('++++ error',error.response.data);
+       setData({
+             ...data,
+             isSubmitting: false,
+             errorMessage: error.response.data.message
+           });
+     });
+
+
+   };
+
+
+    function MyVerticallyCenteredModal(props) {
+      return (
+        <Modal
+          {...props}
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title-vcenter">
+              Edit Profile
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+
+
+
+          <form onSubmit={handleFormSubmit}>
+
+          <div className="form-group">
+
+              <input type="text" className="form-control" required onChange={handleInputChange} name="patientName" value={data.patientName}  placeholder="Patient Name"/>
+            </div>
+          <div className="form-group">
+
+              <input type="email" className="form-control"  onChange={handleInputChange} name="email" value={data.email}    placeholder=" E-mail"/>
+              {data.errorMessage && (<span className="form-error mt-2 text-danger">{data.errorMessage}</span>)}
+            </div>
+          <div className="form-group">
+          <div class="input-group mb-2">
+               <div class="input-group-prepend">
+                 <div class="input-group-text"> +92 </div>
+               </div>
+               <input type="text" class="form-control" required  onChange={handleInputChange} minlength="10" maxlength="10" name="mobileNumber" value={data.mobileNumber}     id="inlineFormInputGroup" placeholder="Mobile Number" />
+             </div>
+           </div>
+
+            <div class="form-group row">
+              <label for="dateOfBirth" class="col-sm-3 col-form-label">Date of Birth</label>
+              <div class="col-sm-9 " id="dateOfBirth" >
+              <DatePicker
+
+                   selected={data.dateOfBirth}
+                   onChange={date=>setData({
+                     ...data,
+                     dateOfBirth:date
+                   })}
+                 />
+              </div>
+            </div>
+
+           <Form.Group controlId="exampleForm.ControlSelect1">
+
+                <Form.Control as="select"  required onChange={handleInputChange} name="gender" value={data.gender}    >
+                <option>Select Gender</option>
+                <option>male</option>
+                <option>female</option>
+              </Form.Control>
+            </Form.Group>
+
+
+
+
+           <div className="form-group">
+             <input type="password" id="exampleInputPassword1" minlength="8" maxlength="20"  onChange={handleInputChange} name="password" value={data.password}     placeholder="Password (Must be 8-20 characters long.)"  class="form-control" aria-describedby="passwordHelpInline"/>
+
+          </div>
+
+
+
+
+          </form>
+
+
+
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={props.onHide}>Close</Button>
+            <Button >Save Changes</Button>
+          </Modal.Footer>
+        </Modal>
+      );
+    }
+
+
+
+
+
   let user=useContext(AuthContext);
   let [profileImage, updateImage]=useState({file:null});
+  const [modalShow, setModalShow] = useState(false);
+
   let profileImageSubmit=(e)=>{
 
     e.preventDefault();
@@ -64,29 +221,32 @@ let PatientProfile=()=>{
     </div>
     <div className="col-lg-9 col-md-9 col-sm-12">
 
-    <Accordion>
+
     <p className="font-weight-bold bg-light p-3 border  rounded"> <span className="h5"> {user.state.user.patientName} </span>
-    <span className="float-right"> <Accordion.Toggle  eventKey="1">  <i className="fa fa-edit fa-2x  text-primary"> </i> </Accordion.Toggle> </span>
-     </p>
-     <Accordion.Collapse eventKey="1">
-     <h1>done</h1>
-   </Accordion.Collapse>
+    </p>
      <p className="font-weight-normal bg-light p-3  border  rounded"> <span className="h5"> {user.state.user.mobileNumber } </span>
-     <span className="float-right"> {user.state.user.isVerified? <i className="fa fa-edit fa-2x text-primary"> </i> : <button> Verify </button>} </span>
+     <span className="float-right"> {user.state.user.isVerified? <button className="btn btn-outline-danger"> Change Number </button> : <button className="btn btn-outline-primary"> Verify </button>} </span>
       </p>
       <p className="font-weight-normal bg-light p-3 border  rounded"> <span className="h5"> {user.state.user.dateOfBirth} </span>
-      <span className="float-right"> <i className="fa fa-edit fa-2x text-primary"> </i></span>
+
        </p>
       <p className="font-weight-normal bg-light p-3 border  rounded"> <span className="h5"> {user.state.user.gender} </span>
-      <span className="float-right"> <i className="fa fa-edit fa-2x text-primary"> </i></span>
+
        </p>
-       <p className="font-weight-normal bg-light p-3 border  rounded"> <span className="h5"> {user.state.user.bloodGroup? user.state.user.bloodGroup : 'Blood Group'} </span>
-       <span className="float-right"> <i className="fa fa-edit fa-2x text-primary"> </i></span>
+       <p className="font-weight-normal bg-light p-3 border  rounded"> <span className="h5"> {user.state.user.bloodGroup? user.state.user.bloodGroup : 'Add Blood Group'} </span>
+
         </p>
-        <p className="font-weight-normal bg-light p-3 border  rounded"> <span className="h5"> {user.state.user.cnic? user.state.user.cnic : 'CNIC'} </span>
-        <span className="float-right"> <i className="fa fa-edit fa-2x text-primary"> </i></span>
+        <p className="font-weight-normal bg-light p-3 border  rounded"> <span className="h5"> {user.state.user.cnic? user.state.user.cnic : 'Add CNIC'} </span>
+
          </p>
-         </Accordion>
+         <Button variant="primary" onClick={() => setModalShow(true)}>
+        Edit Profile
+      </Button>
+
+      <MyVerticallyCenteredModal
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+        />
     </div>
     </div>
 
@@ -94,4 +254,5 @@ let PatientProfile=()=>{
   )
 }
 
-export default PatientProfile
+
+export default PatientProfile;
