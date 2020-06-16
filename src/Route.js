@@ -8,6 +8,7 @@ import Clinic from './components/admin/clinic';
 import Login from './components/partials/login';
 import Register from './components/partials/register';
 import Profile from './components/partials/profile';
+
 // import Navbar from './components/navbar';
 import Code from './components/admin/code';
 
@@ -29,8 +30,9 @@ class Routers extends Component {
                     <Route path="/clinic"  component={Clinic}/>
                     <Route path="/login"  component={Login} />
                     <Route path="/register" component={Register}/>
-                    {/* <Route path="/navbar" component={Navbar} /> */}
+
                     <Route path="/profile" component={Profile} />
+
                     <Route path="/test" component={Code} />
 
                 </div>

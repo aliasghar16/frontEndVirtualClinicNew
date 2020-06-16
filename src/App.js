@@ -1,6 +1,7 @@
 import React, { useReducer } from 'react';
 import Routers from './Route';
 import setAuthToken from './setAuthToken';
+
 export const AuthContext = React.createContext();
 
 const initialState = {
@@ -19,16 +20,14 @@ const reducer = (state, action) => {
         isAuthenticated: true,
         user: action.payload.user,
         token: action.payload.token,
-
       };
       case "UpdateUser":
         localStorage.setItem("user", JSON.stringify(action.payload.user));
-        console.log('++++ wokring');
+        // console.log('++++ wokring');
         return {
           ...state,
           isAuthenticated: true,
           user: action.payload.user,
-
         };
     case "LOGOUT":
       localStorage.clear();

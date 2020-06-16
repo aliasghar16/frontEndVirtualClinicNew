@@ -100,7 +100,7 @@ const doctorHandleFormSubmit = event => {
     setData({
           isSubmitting: false,
         });
-        
+
 
   })
   .catch(error=>{

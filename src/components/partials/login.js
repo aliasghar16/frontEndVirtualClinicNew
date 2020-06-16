@@ -2,9 +2,10 @@ import React ,{useState} from 'react';
 
 import {Nav , Accordion  } from 'react-bootstrap';
 import Navbar from './navbar';
-import {Link} from 'react-router-dom'
+import {Link ,Redirect} from 'react-router-dom';
+// import { useHistory } from "react-router-dom";
 import axios from 'axios';
-// import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
 
 import { AuthContext } from "../../App";
@@ -12,6 +13,7 @@ import { AuthContext } from "../../App";
 
 let Login=()=>{
   const { dispatch } = React.useContext(AuthContext);
+  // let history = useHistory();
   const initialState = {
       email: "",
       password: "",
@@ -21,9 +23,10 @@ let Login=()=>{
 
 
 let [activeValue,updateValue]=useState({patientActiveValue:true,doctorActiveValue:false})
-// const notify = () => toast.error("Wow so easy !");
+const notify = (message) => toast.success(message);
 
 const [data, setData] = React.useState(initialState);
+let [redirectPage,updateRedirectPage]=useState(false);
 
 const handleInputChange = event => {
     setData({
@@ -50,6 +53,8 @@ const handleInputChange = event => {
             type: "LOGIN",
             payload: response.data
         })
+        notify(response.data.message);
+        updateRedirectPage(true)
       })
       .catch(error => {
         console.log('++++++ error ',error.response.data);
@@ -81,6 +86,8 @@ const doctorHandleFormSubmit = event => {
           type: "LOGIN",
           payload: response.data
       })
+      notify(response.data.message);
+      updateRedirectPage(true)
     })
     .catch(error => {
       console.log('++++++ error ',error.response.data);
@@ -98,7 +105,19 @@ const doctorHandleFormSubmit = event => {
 
 return(
   <div>
+  {redirectPage ? <Redirect to="profile"/> : null }
   <Navbar />
+  <ToastContainer
+position="top-center"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+/>
   <div className="mt-2">
   <Accordion defaultActiveKey="0">
   <Nav justify variant="tabs" defaultActiveKey="1">
