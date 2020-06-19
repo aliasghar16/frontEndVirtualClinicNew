@@ -58,7 +58,8 @@ const handleFormSubmit = event => {
     })
 
   .then(function (response) {
-    console.log('+++++ response',response);
+    console.log('+++++ response   +++ response working',response);
+    console.log('+++++ response dATA HERE',response.data);
     notify(response.data.message);
     setData({
           isSubmitting: false,
@@ -67,7 +68,7 @@ const handleFormSubmit = event => {
   })
   .catch(error=>{
 
-    console.log('++++ error',error.response.data);
+    console.log('++++ error   --- error working',error.response.data);
     setData({
           ...data,
           isSubmitting: false,
@@ -95,7 +96,7 @@ const doctorHandleFormSubmit = event => {
     })
 
   .then(function (response) {
-    console.log('+++++ response',response);
+    console.log('+++++ response --- response wokring',response);
     notify(response.data.message);
     setData({
           isSubmitting: false,
@@ -105,7 +106,7 @@ const doctorHandleFormSubmit = event => {
   })
   .catch(error=>{
 
-    console.log('++++ error',error.response.data);
+    console.log('++++ error  --error  working',error.response.data);
     setData({
           ...data,
           isSubmitting: false,
